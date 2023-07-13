@@ -14,6 +14,11 @@
       align-items: center;
       margin-bottom: 20px;
     }
+    #face-image{
+      height: 400px;
+      margin-left: 200px;
+      margin-right: 50px;
+    }
 
     #header img {
       width: 1500px; /* Modify the width as needed */
@@ -58,7 +63,6 @@
       display: flex;
       flex-wrap: wrap;
       margin-top: 20px;
-      margin-left: 20vw;
       width: 30%; /* Added */
 
     }
@@ -145,18 +149,34 @@
 
   <canvas id="chart"></canvas>
   <div id="bottom-container">
+    <img id = "face-image" src="suggestions/faces.png" alt="UKG faces">
   <div id="emotions-container">
     <button class="emotion-button" onclick="selectEmotion('Motivated')">Motivated</button>
     <button class="emotion-button" onclick="selectEmotion('Happy')">Happy</button>
+    <button class="emotion-button" onclick="selectEmotion('Excited')">Excited</button>
+    <button class="emotion-button" onclick="selectEmotion('Energized')">Energized</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Relaxed')">Relaxed</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Content')">Content</button>
     <button class="emotion-button" onclick="selectEmotion('Confused')">Confused</button>
+    <button class="emotion-button" onclick="selectEmotion('Tired')">Tired</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Stressed')">Stressed</button>
     <button class="emotion-button" onclick="selectEmotion('Lonely')">Lonely</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Imposter')">Imposter Syndrome</button>
+
     <button class="emotion-button" onclick="selectEmotion('Bored')">Bored</button>
     <button class="emotion-button" onclick="selectEmotion('Sick')">Sick</button>
-    <button class="emotion-button" onclick="selectEmotion('Burnt Out')">Burnt Out</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Burnt-Out')">Burnt Out</button>
+
     <button class="emotion-button" onclick="selectEmotion('Depressed')">Depressed</button>
-    <button class="emotion-button" onclick="selectEmotion('Excited')">Excited</button>
-    <button class="emotion-button" onclick="selectEmotion('Content')">Content</button>
-    <button class="emotion-button" onclick="selectEmotion('Imposter Syndrome')">Imposter Syndrome</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Anxious')">Anxious</button>
+
+    <button class="emotion-button" onclick="selectEmotion('Family')">Family Emergency</button>
   </div>
 
 
