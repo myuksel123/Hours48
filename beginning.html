@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Wellness</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('suggestions/background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #chart-container {
+            width: 285px;
+            height: 490px;
+            margin: 190px 0 0 335px;
+            border: none;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            background-color: #ffffff; /* white background*/
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        canvas {
+            background-color: #ffffff; /* Baby Blue */
+            border-radius: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 200px;
+            height: 40px;
+            border-radius: 20px;
+            font-size: 16px;
+            background-color: #ffffff; /* White */
+            color: #25CDC1; /* Blue text color */;
+            border: 2px solid #0000FF; /* Blue border */
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #FFA500; /* Orange */
+        }
+    </style>
+</head>
+<body>
+<div id="chart-container">
+    <h1 style="margin: 0; font-size: 24px; font-weight: bold; text-shadow: 2px 2px 4px 25CDC1;">My Wellness</h1>
+
+    <h2 style="margin: 10px 0; font-size: 16px;">How well are you feeling?</h2>
+    <input type="range" id="mood-slider" min="1" max="10" value="5" step="1">
+
+    <canvas id="chart"></canvas>
+
+    <div id="button-container">
+        <button onclick="goToGraphPage()">Record my mental health</button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Emotions data for the week
+    const emotionsData = {
+      M: 5,
+      T: 7,
+      W: 4,
+      Th: 6,
+      F: 8,
+      Sat: 3,
+      Sun: 9,
+    };
+
+    // Get the slider element
+    const moodSlider = document.getElementById('mood-slider');
+
+    // Create the line chart
+    const ctx = document.getElementById('chart').getContext('2d');
+    const gradientFill = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientFill.addColorStop(0, 'rgba(173, 216, 230, 0.2)'); // Baby Blue
+    gradientFill.addColorStop(1, 'rgba(173, 216, 230, 0)'); // Transparent
+
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Object.keys(emotionsData),
+        datasets: [{
+          label: 'Mood',
+          data: Object.values(emotionsData),
+          borderColor: '#87CEFA', // Baby Blue
+          backgroundColor: gradientFill,
+          pointRadius: 10,
+          pointHoverRadius: 12,
+          fill: 'start',
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            min: 1,
+            max: 10,
+            ticks: {
+              stepSize: 1,
+            },
+            title: {
+              display: false,
+            },
+            grid: {
+          display: false, // Remove the grid lines for the y-axis
+        },
+          },
+          x: {
+            ticks: {
+              font: {
+                size: 14,
+                weight: 'bold',
+              },
+            },
+            grid: {
+          display: false, // Remove the grid lines for the y-axis
+        },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false, // Hide the legend
+          },
+        },
+        layout: {
+          padding: {
+            left: 20, // Adjust the left padding
+          },
+        },
+      },
+    });
+
+    // Update the mood for the selected day based on the slider value
+    function updateMood() {
+      const selectedDay = chart.data.labels[chart.data.labels.length - 1];
+      const selectedMood = parseInt(moodSlider.value);
+      emotionsData[selectedDay] = selectedMood;
+      chart.data.datasets[0].data = Object.values(emotionsData);
+      chart.update();
+    }
+
+    // Attach event listener to the mood slider
+    moodSlider.addEventListener('input', updateMood);
+
+    // Function to navigate to the graph page
+    function goToGraphPage() {
+       window.open('website.html', '_blank');
+    }
+</script>
+</body>
+</html>

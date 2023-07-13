@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Full Graph</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f8fa; /* Light Gray */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      flex-direction: column; /* Added */
+    }
+
+    #chart-container {
+      width: 100%; /* Modified */
+      height: 50vh; /* Modified */
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1;
+    }
+    #bottom-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    #emotions-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+      width: 50%; /* Added */
+    }
+
+    .emotion-button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 4px;
+      background-color: #87CEFA; /* Baby Blue */
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+     .emotion-button.selected {
+      background-color: #6495ED; /* Cornflower Blue */
+    }
+     #suggestions-container {
+     margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; /* Modified */
+      width: 50%; /* Modified */
+    }
+
+    .carousel-item {
+      text-align: center;
+    }
+
+    .carousel-item img {
+      max-width: 300px;
+      max-height: 500px;
+      border-radius: 4px;
+      margin: 10px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+     .carousel-control-prev {
+      left: 10px;
+    }
+
+    .carousel-control-next {
+      right: 10px;
+    }
+
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div id="chart-container">
+  <h1>Full Graph</h1>
+
+  <canvas id="chart"></canvas>
+  <div id="bottom-container">
+  <div id="emotions-container">
+    <button class="emotion-button" onclick="selectEmotion('Motivated')">Motivated</button>
+    <button class="emotion-button" onclick="selectEmotion('Happy')">Happy</button>
+    <button class="emotion-button" onclick="selectEmotion('Confused')">Confused</button>
+    <button class="emotion-button" onclick="selectEmotion('Lonely')">Lonely</button>
+    <button class="emotion-button" onclick="selectEmotion('Bored')">Bored</button>
+    <button class="emotion-button" onclick="selectEmotion('Sick')">Sick</button>
+    <button class="emotion-button" onclick="selectEmotion('Burnt Out')">Burnt Out</button>
+    <button class="emotion-button" onclick="selectEmotion('Depressed')">Depressed</button>
+    <button class="emotion-button" onclick="selectEmotion('Excited')">Excited</button>
+    <button class="emotion-button" onclick="selectEmotion('Content')">Content</button>
+  </div>
+</div>
+
+<div id="suggestions-container">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-emotion="no-emotion">
+        <img src="suggestions/bored.png" alt="Select An Emotion" />
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    // Emotions data for the week
+    const emotionsData = {
+      Monday: 5,
+      Tuesday: 7,
+      Wednesday: 4,
+      Thursday: 6,
+      Friday: 8,
+      Saturday: 3,
+      Sunday: 9,
+    };
+
+    // Create the line chart
+    const ctx = document.getElementById('chart').getContext('2d');
+    const gradientFill = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientFill.addColorStop(0, 'rgba(255, 255, 255, 1)'); /* White */
+    gradientFill.addColorStop(1, 'rgba(230, 240, 255, 0.2)'); /* Light Blue */
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Object.keys(emotionsData),
+        datasets: [{
+          label: 'Mood',
+          data: Object.values(emotionsData),
+          borderColor: '#87CEFA', /* Baby Blue */
+          backgroundColor: gradientFill,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          fill: 'start',
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            min: 1,
+            max: 10,
+            ticks: {
+              stepSize: 1,
+            },
+            title: {
+              display: true,
+              text: 'Mood Level',
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        layout: {
+          padding: {
+            bottom: 20,
+          },
+        },
+      },
+    });
+
+ // Select emotion button
+function selectEmotion(button, emotion) {
+  const isActive = button.classList.contains('selected');
+
+  if (isActive) {
+    button.classList.remove('selected');
+    removeCarouselItem(emotion);
+  } else {
+    button.classList.add('selected');
+    addCarouselItem(emotion);
+  }
+}
+
+// Add carousel item based on selected emotion
+function addCarouselItem(emotion) {
+  const carouselInner = document.querySelector('.carousel-inner');
+  const carouselItems = document.querySelectorAll('.carousel-item');
+
+  // Check if the carousel item for the emotion already exists
+  const existingItem = Array.from(carouselItems).find((item) =>
+    item.dataset.emotion === emotion.toLowerCase()
+  );
+
+  if (!existingItem) {
+    const carouselItem = document.createElement('div');
+    carouselItem.classList.add('carousel-item');
+    carouselItem.dataset.emotion = emotion.toLowerCase();
+    const image = document.createElement('img');
+    image.src = `suggestions/${emotion.toLowerCase()}.png`;
+    carouselItem.appendChild(image);
+    carouselInner.appendChild(carouselItem);
+  }
+
+  activateCarouselItem(emotion);
+
+  updateCarouselNavigation();
+}
+
+// Remove carousel item based on unselected emotion
+function removeCarouselItem(emotion) {
+  const carouselItems = document.querySelectorAll('.carousel-item');
+  carouselItems.forEach((item) => {
+    if (item.dataset.emotion === emotion.toLowerCase()) {
+      item.remove();
+    }
+  });
+
+  updateCarouselNavigation();
+}
+
+// Activate the corresponding carousel item
+function activateCarouselItem(emotion) {
+  const carouselItems = document.querySelectorAll('.carousel-item');
+  carouselItems.forEach((item) => {
+    const isActive = item.dataset.emotion === emotion.toLowerCase();
+    item.classList.toggle('active', isActive);
+  });
+}
+
+
+// Update carousel navigation based on the number of carousel items
+function updateCarouselNavigation() {
+  const carouselIndicators = document.querySelector('.carousel-indicators');
+  const carouselItems = document.querySelectorAll('.carousel-item');
+
+  // Show/hide carousel navigation based on the number of items
+  if (carouselItems.length > 1) {
+    carouselIndicators.style.display = 'block';
+  } else {
+    carouselIndicators.style.display = 'none';
+  }
+}
+
+// Get all emotion buttons
+const emotionButtons = document.querySelectorAll('.emotion-button');
+
+// Attach click event listener to each emotion button
+emotionButtons.forEach((button) => {
+  const emotion = button.textContent.trim();
+  button.addEventListener('click', () => {
+    selectEmotion(button, emotion);
+  });
+});
+
+  </script>
+</body>
+</html>
