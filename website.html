@@ -50,7 +50,6 @@
     #bottom-container {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       width: 100%;
       margin-top: 20px;
     }
@@ -58,9 +57,9 @@
     #emotions-container {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       margin-top: 20px;
-      width: 50%; /* Added */
+      margin-left: 100px;
+      width: 30%; /* Added */
     }
 
     .emotion-button {
@@ -73,7 +72,6 @@
       border: 1px solid #87CEFA; /* Baby Blue */
       cursor: pointer;
       transition: background-color 0.3s ease;
-       width: 120px; /* Modified */
     }
 
      .emotion-button.selected {
@@ -88,7 +86,8 @@
     }
 
     .carousel-item {
-      text-align: center;
+    text-align: center;
+    margin-top: 10px; /* Adjust the margin-top value as needed */
     }
 
     .carousel-item img {
@@ -146,6 +145,7 @@
     <button class="emotion-button" onclick="selectEmotion('Depressed')">Depressed</button>
     <button class="emotion-button" onclick="selectEmotion('Excited')">Excited</button>
     <button class="emotion-button" onclick="selectEmotion('Content')">Content</button>
+    <button class="emotion-button" onclick="selectEmotion('Imposter Syndrome')">Imposter Syndrome</button>
   </div>
 </div>
 
@@ -153,7 +153,7 @@
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active" data-emotion="no-emotion">
-        <img src="suggestions/bored.png" alt="Select An Emotion" />
+        <img src="suggestions/empty.png" alt="Select An Emotion" />
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -196,7 +196,7 @@
         datasets: [{
           label: 'Mood',
           data: Object.values(emotionsData),
-          borderColor: '#87CEFA', /* Baby Blue */
+          borderColor: '#30CEBB', /* Baby Blue */
           backgroundColor: gradientFill,
           pointRadius: 5,
           pointHoverRadius: 7,
