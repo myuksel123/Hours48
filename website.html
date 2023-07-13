@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Full Graph</title>
+  <title>My Wellness</title>
   <style>
     body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background-color: #f5f8fa; /* Light Gray */
+      font-family: Calibri, Arial, sans-serif;
+    }
+     #header {
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-      flex-direction: column; /* Added */
+      margin-bottom: 20px;
+    }
+
+    #header img {
+      width: 1500px; /* Modify the width as needed */
+      height: 50px;
+      margin-right: 10px;
     }
 
     #chart-container {
@@ -62,19 +67,20 @@
       margin: 10px;
       padding: 10px 20px;
       font-size: 14px;
-      border-radius: 4px;
-      background-color: #87CEFA; /* Baby Blue */
-      color: #fff;
-      border: none;
+      border-radius: 30px;
+      background-color: #fff; /* White */
+      color: #87CEFA; /* Baby Blue */
+      border: 1px solid #87CEFA; /* Baby Blue */
       cursor: pointer;
       transition: background-color 0.3s ease;
+       width: 120px; /* Modified */
     }
 
      .emotion-button.selected {
       background-color: #6495ED; /* Cornflower Blue */
     }
      #suggestions-container {
-     margin-top: 20px;
+     margin-top: 5px;
       display: flex;
       flex-direction: column;
       align-items: flex-end; /* Modified */
@@ -89,7 +95,7 @@
       max-width: 300px;
       max-height: 500px;
       border-radius: 4px;
-      margin: 10px;
+      margin: 5px;
     }
 
     .carousel-control-prev,
@@ -121,8 +127,11 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+<div id="header">
+  <img src="suggestions/header.png" alt="Header Image">
+</div>
 <div id="chart-container">
-  <h1>Full Graph</h1>
+  <h4>Wellness History</h4>
 
   <canvas id="chart"></canvas>
   <div id="bottom-container">
